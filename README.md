@@ -78,6 +78,96 @@ The features below are a nice to have for the application, but the application c
 - Database: PostgreSQL
 - Docker for simplified local development
 
+## 📊 Project Analysis
+
+### Numele Proiectului / Project Name
+
+**Meal Train Coordinator** (cod-name: `amber-wisteria`)
+
+---
+
+### Limbajele Folosite / Languages Used
+
+| Strat / Layer | Limbaj / Language | Framework / Tool | Versiune / Version |
+|---|---|---|---|
+| Backend API | **Python** | Django | 6.0.1 |
+| Backend REST | **Python** | Django Rest Framework (DRF) | 3.15.2 |
+| Frontend | **JavaScript** | React | 19.2.0 |
+| Frontend Build | **JavaScript** | Vite | 7.2.4 |
+| Stilizare / Styling | **CSS** | Tailwind CSS | 4.1.18 |
+| Client HTTP | **JavaScript** | Axios | 1.13.5 |
+| Rutare Frontend | **JavaScript** | React Router | 7.13.0 |
+| Baza de Date / Database | **SQL** | PostgreSQL | (via psycopg2) |
+| Autentificare / Auth | **Python** | SimpleJWT | 5.4.0 |
+| Documentație API | **Python** | DRF YASG (Swagger/OpenAPI) | — |
+| Containerizare | — | Docker / Docker Compose | — |
+
+---
+
+### Ce Făcea Aplicația / What the Application Does
+
+**Meal Train Coordinator** este o aplicație web full-stack care ajută comunitățile să organizeze „trenuri de mâncare" (meal trains) pentru persoanele care trec prin momente dificile: nou-nascut, boală, pierdere, operație majoră etc.
+
+Aplicația permite prietenilor, familiei și vecinilor să se înscrie să aducă mâncare în zile specifice, astfel încât persoana aflată în nevoie să nu trebuiască să se îngrijoreze de gătit.
+
+**Funcționalități principale:**
+
+- **Autentificare**: Înregistrare și autentificare utilizator cu token JWT
+- **Dashboard utilizator**: Vizualizarea trenurilor de mâncare create sau la care s-a alăturat
+- **Creare Meal Train**: Formular în mai mulți pași pentru crearea unui tren de mâncare (tip mâncare: mic dejun, prânz, cină)
+- **Sistem de aprobare**: Organizatorul aprobă sau respinge cererile de alăturare
+- **Programare mese**: Sloturi de mâncare pe zile și tipuri de mese; calendar interactiv
+- **Sistem de prieteni**: Trimitere/acceptare/respingere cereri de prietenie; auto-acceptare mutuală
+- **Notificări**: Popup-uri pentru notificări în aplicație
+
+---
+
+### Concepte Importante Folosite / Key Concepts Used
+
+#### 🏛️ OOP (Object-Oriented Programming)
+- Modele Django ca clase Python cu relații (`ForeignKey`, `OneToOneField`, `ManyToMany`)
+- Vizualizări bazate pe clase (`APIView`, `generics`) în Django Rest Framework
+- Componente React (clase și funcționale)
+
+#### 🗄️ Baze de Date / Databases
+- **PostgreSQL** ca bază de date relațională
+- Design schema relațional: `MealTrain`, `MealSlot`, `MealTrainMembership`, `MealSignup`, `Profile`, `FriendRequest`
+- Constrângeri de unicitate (`unique_together`) pentru prevenirea duplicatelor
+- Ștergeri în cascadă (`CASCADE`) pentru integritate referențială
+- Check constraints pentru validarea stărilor permise
+
+#### 🔐 Autentificare & Autorizare / Authentication & Authorization
+- **JWT (JSON Web Tokens)**: autentificare stateless cu access token + refresh token
+- **Interceptori Axios**: reîmprospătare automată a token-ului la eroare 401
+- **Permisiuni personalizate**: clase de permisiuni DRF (`is_organizer`, `is_allowed_participant`)
+- **Rute protejate**: `PrivateRoutes` și `GuestRoutes` în React Router
+
+#### 🌐 REST API Architecture
+- Endpoints RESTful: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`
+- Resurse imbricate: `/mealtrains/{id}/slots/`, `/mealtrains/{id}/memberships/`
+- Serializare și validare date cu DRF Serializers
+- Documentație Swagger/OpenAPI automată
+
+#### 🔄 Design Patterns
+- **Signal Pattern**: Crearea automată a profilului utilizatorului la înregistrare (Django signals)
+- **State Machine**: Flux de stări pentru cereri de membership (`PENDING` → `APPROVED` / `REJECTED`)
+- **Component-Based Architecture**: Componentele React reutilizabile (carduri, popup-uri, formulare)
+- **Multi-step Form Pattern**: Formular de creare meal train cu pași: `BasicInfoStep` → `ScheduleStep` → `ReviewStep`
+- **Repository/Serializer Pattern**: Separarea logicii de serializare de cea a vizualizărilor
+
+#### 🧮 Algoritmi & Logică / Algorithms & Logic
+- **Auto-acceptare cereri mutuale de prietenie**: Dacă doi utilizatori și-au trimis reciproc cereri, ambele se acceptă automat
+- **Filtrare și validare**: Sloturi duplicate prevenite prin constrângeri de baze de date și validare în serializer
+- **Ștergere în cascadă**: Ștergerea unui meal train șterge automat toate sloturile, membership-urile și înscrierile asociate
+- **Rutare cu gardă (Route Guards)**: Utilizatorii neautentificați sunt redirecționați automat
+
+#### 🐳 DevOps & Deployment
+- **Docker & Docker Compose**: Containerizarea serviciilor (backend + baza de date)
+- **Environment Variables**: Configurație prin variabile de mediu pentru portabilitate
+- **CORS**: Politici de acces cross-origin configurate
+
+---
+
 ## 👥 Team
 
 Leadership
